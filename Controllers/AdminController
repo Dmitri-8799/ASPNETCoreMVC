@@ -1,0 +1,72 @@
+//дочитать:
+
+https://learn.microsoft.com/ru-ru/aspnet/web-api/overview/older-versions/using-web-api-1-with-entity-framework-5/using-web-api-with-entity-framework-part-4
+
+
+
+//делаю контроллер администратора
+/*
+В диалоговом окне Добавление контроллера назовите контроллер AdminController. 
+В разделе Шаблон выберите "Контроллер API с действиями чтения и записи, используя Entity Framework". 
+В разделе Класс модели выберите "Product (ProductStore.Models)". В разделе Контекст данных выберите "<Новый контекст> данных".
+
+Если выбрать "<Создать контекст данных",> откроется диалоговое окно Новый контекст данных . 
+Назовите контекст ProductStore.Models.OrdersContextданных .
+
+
+ИТОГО:
+
+Класс с именем OrdersContext , производный от DbContext. Этот класс обеспечивает связь между моделями POCO и базой данных.
+Контроллер веб-API с именем AdminController. Этот контроллер поддерживает операции CRUD на Product экземплярах. Он использует класс для OrdersContext взаимодействия с Entity Framework.
+Новая строка подключения к базе данных в файле Web.config.
+*/
+
+
+// Новая строка подключения к базе данных в файле Web.config:     public OrdersContext() : base("name=OrdersContext")
+
+//Добавьте в класс OrdersContext следующие свойства:
+
+/*
+public DbSet<Order> Orders { get; set; }
+public DbSet<OrderDetail> OrderDetails { get; set; }
+*/
+
+/*
+
+
+//
+DbSet представляет набор сущностей, к которым можно выполнять запросы. 
+Ниже приведен полный список для OrdersContext класса :
+public class OrdersContext : DbContext
+{
+    public OrdersContext() : base("name=OrdersContext")
+    {
+    }
+
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderDetail> OrderDetails { get; set; }
+    public DbSet<Product> Products { get; set; }
+}
+*/
+
+/*
+Класс AdminController определяет пять методов, реализующих базовые функции CRUD. Каждый метод соответствует универсальному коду ресурса (URI), который клиент может вызвать:
+
+Метод контроллера	                                      Описание	                             URI	              Метод HTTP
+GetProducts	                                      Возвращает все продукты.	               api/products	              GET
+GetProduct	                              Находит продукт по идентификатору.	            api/products/id	            GET
+PutProduct	                                        Обновления продукт.	                  api/products/id	            PUT
+PostProduct	                                        Создает продукт.	                      api/products	           POST
+DeleteProduct	                                      Удаляет продукт.	                     api/products/id	        DELETE
+
+*/
+
+/*
+Каждый метод вызывает для OrdersContext запроса базы данных. 
+Методы, изменяющие коллекцию (PUT, POST и DELETE), вызывают db.SaveChanges для сохранения изменений в базе данных. 
+Контроллеры создаются для каждого HTTP-запроса, а затем удаляются, поэтому необходимо сохранить изменения перед возвратом метода.
+*/
+
+
+
+
